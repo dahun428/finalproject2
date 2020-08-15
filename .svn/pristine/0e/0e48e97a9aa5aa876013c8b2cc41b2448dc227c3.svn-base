@@ -1,0 +1,15 @@
+package com.sample.web.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class PerformanceContoller {
+
+	@GetMapping("/performance/list.do")
+	public String list(Model model) {
+		
+		return "/performance/list";
+	}
+}

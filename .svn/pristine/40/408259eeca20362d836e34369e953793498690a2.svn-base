@@ -1,0 +1,9 @@
+package com.sample.dao;
+
+import com.sample.web.view.Performance;
+
+public interface PerformanceDao {
+    
+	Performance selectPerformance(int id);
+	
+}

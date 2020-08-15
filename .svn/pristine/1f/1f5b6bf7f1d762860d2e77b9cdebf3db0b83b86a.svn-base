@@ -1,0 +1,26 @@
+package com.sample.dao;
+
+import java.util.List;
+
+import com.sample.web.view.HallInfo;
+import com.sample.web.view.Mate;
+import com.sample.web.view.MateTimeLine;
+import com.sample.web.view.Performance;
+import com.sample.web.view.PerformanceSchedule;
+import com.sample.web.view.User;
+
+public interface MateDao {
+    void insertMate(Mate mate);
+    Mate getMateById(int mateId);
+    List<MateTimeLine> getTimelinesByMateId(int mateId);
+    List<Mate> getMatesByPerformanceId(int performanceId);
+    List<Mate> getOldMates();
+    
+    List<User> getMateUserByMateId(int mateId);
+    Performance getMatePerformanceByPerformanceId(int performanceId);
+    List<User> getMateUserByPerformanceId(int performanceId);
+    List<String> getMateTagByMateId(int mateId);
+    List<String> getMatePerformanceGenre(int performanceId);
+    PerformanceSchedule getPerformanceScheduleByPerformanceId(int performanceId);
+    HallInfo getMateHallInfoByPerformanceId(int performanceId);
+}

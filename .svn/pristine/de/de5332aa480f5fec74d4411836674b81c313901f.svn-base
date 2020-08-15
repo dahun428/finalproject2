@@ -1,0 +1,14 @@
+package com.sample.dao;
+
+import java.util.List;
+
+import com.sample.web.view.Mate;
+import com.sample.web.view.MateTimeLine;
+
+public interface MateDao {
+    void insertMate(Mate mate);
+    Mate getMateById(int mateId);
+    List<MateTimeLine> getTimelinesByMateId(int mateId);
+    List<Mate> getMatesByPerformanceId(int performanceId);
+    List<Mate> getOldMates();
+}
