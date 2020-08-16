@@ -21,9 +21,10 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/resources/js/jquery.color.js"></script>
 <script type="text/javascript" src="/resources/js/custom.js"></script>
-
+<script type="text/javascript" src="/resources/js/mate.js"></script>
 </head>
 <body  style="background-color: rgba(0, 0, 0, 0.6);">
 	<div class="header">
@@ -47,28 +48,24 @@
 								</div>
 							</header>
 							<ul>
-								<li>
-									<!-- user image --> <img
-									src="/resources/sample-images/sample-consert1.jpg" alt="">
-									<div>
-										<!-- user id -->
-										<h2>홍길동</h2>
-										<h3>
-											<span class="text-primary"></span> #오늘도홍대
-										</h3>
-									</div>
-								</li>
-								<li>
-									<!-- user image --> <img
-									src="/resources/sample-images/sample-consert1.jpg" alt="">
-									<div>
-										<!-- user id -->
-										<h2>홍길동</h2>
-										<h3>
-											<span class="text-primary"></span> #오늘도홍대
-										</h3>
-									</div>
-								</li>
+								<c:choose>
+									<c:when test="${not empty mate }">
+										<c:forEach items="${mate }" var="user">
+									<li>
+										<!-- user image --> <img
+										src="/resources/sample-images/sample-consert1.jpg" alt="">
+										<div>
+											<!-- user id -->
+											<h2>${user.nickname }</h2>
+											<h3>
+												<span class="text-primary"></span>
+											</h3>
+										</div>
+									</li>
+										</c:forEach>
+									</c:when>
+								</c:choose>
+								
 							</ul>
 							<div class="col-12">
 								<a href="matelist.do" class="btn btn-warning btn-lg">
@@ -84,11 +81,11 @@
 							<header>
 								<div class="col-12 mt-3">
 									<div class="input-group">
-										<select class="custom-select" id="inputGroupSelect04"
+										<select class="custom-select" id="mCat"
 											aria-label="Example select with button addon">
-											<option selected>카테고리 등록</option>
-											<option value="1" class="active">혼자 볼래요</option>
-											<option value="2">같이 볼래요</option>
+										<c:forEach items="${categories }" var="cat">
+											<option value="${cat.id }">${cat.category }</option>
+										</c:forEach>
 
 										</select>
 										<div class="input-group-append">
@@ -98,7 +95,7 @@
 									</div>
 								</div>
 								<div class="col-12 ml-3 mt-3">
-									<span class="text-primary">#해시태그,#해시태그,#해시태그,#해시태그,#해시태그,#해시태그,#해시태그,#해시태그,#해시태그,#해시태그,</span>
+									<span class="text-primary" id="mTag"></span>
 									<button id="mate-plus-hastag" type="button"
 										class="btn btn-primary btn-sm">
 										<i class="fas fa-plus"></i>
@@ -130,73 +127,11 @@
 
 							</header>
 							<ul id="chat">
-								<li class="you">
-									<div class="entete">
-										<span class="status green"></span>
-										<h2>UserId</h2>
-										<h3>10:12AM, Today</h3>
-									</div>
-									<div class="triangle"></div>
-									<div class="message">Lorem ipsum dolor sit amet,
-										consectetuer adipiscing elit. Aenean commodo ligula eget
-										dolor.</div>
-								</li>
-								<li class="me">
-									<div class="entete">
-										<h3>10:12AM, Today</h3>
-										<h2>UserId</h2>
-										<span class="status blue"></span>
-									</div>
-									<div class="triangle"></div>
-									<div class="message">Lorem ipsum dolor sit amet,
-										consectetuer adipiscing elit. Aenean commodo ligula eget
-										dolor.</div>
-								</li>
-								<li class="me">
-									<div class="entete">
-										<h3>10:12AM, Today</h3>
-										<h2>Vincent</h2>
-										<span class="status blue"></span>
-									</div>
-									<div class="triangle"></div>
-									<div class="message">OK</div>
-								</li>
-								<li class="you">
-									<div class="entete">
-										<span class="status green"></span>
-										<h2>Vincent</h2>
-										<h3>10:12AM, Today</h3>
-									</div>
-									<div class="triangle"></div>
-									<div class="message">Lorem ipsum dolor sit amet,
-										consectetuer adipiscing elit. Aenean commodo ligula eget
-										dolor.</div>
-								</li>
-								<li class="me">
-									<div class="entete">
-										<h3>10:12AM, Today</h3>
-										<h2>Vincent</h2>
-										<span class="status blue"></span>
-									</div>
-									<div class="triangle"></div>
-									<div class="message">Lorem ipsum dolor sit amet,
-										consectetuer adipiscing elit. Aenean commodo ligula eget
-										dolor.</div>
-								</li>
-								<li class="me">
-									<div class="entete">
-										<h3>10:12AM, Today</h3>
-										<h2>Vincent</h2>
-										<span class="status blue"></span>
-									</div>
-									<div class="triangle"></div>
-									<div class="message">OK</div>
-								</li>
 							</ul>
 							<footer>
-								<textarea placeholder="Type your message"></textarea>
+								<textarea id="chat-content-box" placeholder="메시지를 입력해주세요"></textarea>
 								<div class="col-12 text-right">
-								 <button   class="btn btn-outline-primary">등록</button>
+								 <button id="chat-submit-btn" class="btn btn-outline-primary">등록</button>
 								</div>
 							</footer>
 						</div>
@@ -211,8 +146,7 @@
 			style="position: absolute; z-index: 20; cursor: pointer;">
 			<i class="far fa-times-circle fa-2x"></i>
 		</div>
-		<div class='image'
-			style="background-image: url('/resources/sample-images/sample-consert1.jpg');">
+		<div class='image' id="pImage">
 		</div>
 
 		<div class='wave'></div>
@@ -223,37 +157,40 @@
 			<div class="row mt-4">
 				<div class="col-12">
 					<h4 style="display: inline-block;">
-						<span>S</span>석 메이트방
+						<span id="seatRate"></span>석 메이트방
 					</h4>
 				</div>
 				<div class="col-12 text-left ml-3">
 					<div class="card font-weight-bolder" style="width: 270px;">
-						<div class="text-white h4 badge badge-info text-wrap">연극</div>
+						<div class="text-white h4 badge badge-info text-wrap"><span id="pCat"></span></div>
 						<div class="ml-2">
 							<table class="table table-boderless">
 								<tbody>
 									<tr>
-										<td><i class="far fa-calendar-alt"></i> 공연기간 <small
-											class="ml-2"> <span>2021.05.07</span> <span>~</span>
-												<span>2021.05.08</span>
-										</small></td>
+										<td><i class="far fa-calendar-alt"></i> 공연기간 <div><small
+											class="ml-2"> 
+											<span id="pStartDate"></span> <span>~</span>
+												<span id="pEndDate"></span>
+										</small></div></td>
 									</tr>
 									<tr>
 										<td>
 											<i class="fas fa-map-marker-alt"></i>공연장소
-											<small>세종문화회관</small>
+											<small><span id="pPlace"></span></small>
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<i class="fas fa-map-marker-alt"></i>관람시간
-											<small>175분</small>
+											<i class="fas fa-map-marker-alt"></i>공연시간
+											<small><span id="pShowDate"></span></small>
+											<small><span id="pShowTime"></span></small>
+											<small><span id="pShowNumber"></span>회차</small>
 										</td>
 									</tr>
 									<tr>
 										<td>
 											<i class="fas fa-registered"></i>
-											<small>15세</small>
+											<small><span id="pRating"></span>세</small>
 										</td>
 									</tr>
 								</tbody>
@@ -270,6 +207,9 @@
 				<div class="col-12 mt-2"></div>
 			</div>
 		</div>
+		<input type="hidden" value="" id="totalLength"/>
+		<input type="hidden" value="${pid }" id="pid"/>
+		<input type="hidden" value="${mnum }" id="mnum" />
 	</div>
 	<script type="text/javascript">
 	$(function(){

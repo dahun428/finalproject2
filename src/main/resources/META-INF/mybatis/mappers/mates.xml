@@ -66,6 +66,19 @@ WHERE mmain.id = 1;
 		<collection property="mateTags" select="getMateTagByMateId" column="id"/>
 	</resultMap>
 
+	<select id="getMateRoomByPerformanceIdAndMateId" parameterType="int" resultMap="mateMap">
+		SELECT 
+				mmain.id, 
+				mmain.performanceId, 
+				mmain.seatGroup,
+				mcat.category,
+				mmain.groupSize, 
+				mmain.seatRate 
+		FROM mate_main mmain
+		JOIN mate_category mcat ON mmain.id = mcat.id
+		WHERE mmain.id = #{mateId}
+		AND mmain.performanceId = #{performanceId}
+	</select>
 	<select id="getMatesByPerformanceId" parameterType="int" resultMap="mateMap">
 		SELECT 
 				mmain.id, 
@@ -78,8 +91,8 @@ WHERE mmain.id = 1;
 		JOIN mate_category mcat ON mcat.id = mmain.category
 		WHERE mmain.performanceId = #{value}
 	</select>
-	<select id="getMateUserByMateId" parameterType="int" resultType="string">
-		SELECT mmem.userId 
+	<select id="getMateUserByMateId" parameterType="int" resultType="User">
+		SELECT mmem.userId as id
 			FROM mate_members mmem
 			JOIN mate_main mmain ON mmain.id = mmem.id
 			WHERE mmain.id = #{value}
@@ -141,9 +154,79 @@ WHERE mmain.id = 1;
 	<select id="getMateAllCategory" resultMap="categoryMap">
 		SELECT id, category FROM mate_category
 	</select>
-	<select id="getAllMateByPerformanceId" parameterType="int" resultType="int">
+	<select id="getCountMateByPerformanceId" parameterType="int" resultType="int">
 		SELECT COUNT(*) FROM mate_main
 		WHERE performanceid = #{value}
 	</select>
 	
+	<!-- MateTimeLine -->
+	<resultMap type="MateTimeLine" id="timelineMap">
+		<result property="id" column="mateId"/>
+		<result property="content" column="content"/>
+		<result property="regDate" column="regDate"/>
+		<collection property="user" column="userId" select="getUserMateInfoById"/>
+	</resultMap>
+	<select id="getMateTimelineByMateId" parameterType="int" resultMap="timelineMap">
+		SELECT
+			 mateId,
+			 content,
+			 regDate,
+			 userId 	
+		FROM mate_timeline 
+		WHERE mateId = #{value}
+		order by regDate 
+	</select>
+	<select id="getUserMateInfoById" parameterType="string" resultType="User">
+		SELECT
+			 umain.id,
+			 umain.nickname,
+			 usub.grade,
+			 picon.path as iconPath
+		FROM user_main umain
+		JOIN user_sub usub ON umain.id = usub.id
+		JOIN profile_icon picon ON usub.iconId = picon.id
+		WHERE umain.id = #{value}
+	</select>
+	<resultMap type="java.util.Map" id="mateCatMap">
+		<result column="id" property="id" javaType="java.lang.String"/>
+		<result column="category" property="category" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<select id="getMateCategoryByMateId" parameterType="int" resultMap="mateCatMap">
+		SELECT
+			mcat.id, 
+			mcat.category
+		FROM mate_main mmain
+		JOIN mate_category mcat ON mmain.category = mcat.id
+		WHERE mmain.id = #{value}
+	
+	</select>
+	
+	<!-- mateTimeLine Insert -->
+	<insert id="addTimeLine" parameterType="MateTimeLine">
+			INSERT INTO mate_timeline
+			(mateId, content, userId)
+			VALUES
+			(#{id}, #{content}, #{user.id} )
+	</insert>
+	
+	<!-- mateid에 해당하는 Mate객체 반환쿼리 -->
+	<select id="getMateByMateId" parameterType="int" resultType="Mate">
+		SELECT
+			id,
+			performanceId,
+			seatGroup,
+			category,
+			groupSize,
+			seatRate 
+		FROM mate_main
+		WHERE id = #{value}
+		
+	</select>
+	<select id="getMateTimeLineCountByMateId" parameterType="int" resultType="int">
+	SELECT COUNT(*) FROM mate_timeline
+	WHERE mateId = #{value}
+	
+	</select>
+
 </mapper>

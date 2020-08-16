@@ -3,11 +3,21 @@ package com.sample.web.view;
 import java.util.Date;
 
 public class MateTimeLine {
+	private int id;
     private String content;
     private Date regDate;
     private User user;
 
-    public String getContent() {
+    
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getContent() {
         return content;
     }
 
@@ -30,4 +40,10 @@ public class MateTimeLine {
     public void setUser(User user) {
         this.user = user;
     }
+
+	@Override
+	public String toString() {
+		return "MateTimeLine [id=" + id + ", content=" + content + ", regDate=" + regDate + ", user=" + user + "]";
+	}
+    
 }

@@ -113,7 +113,7 @@
 																	</c:when>
 																	<c:otherwise>
 																		<c:forEach items="${mate.mateMembers }" var="user">
-																		<span>${user }</span>
+																		<span>${user.id }</span>
 																		</c:forEach>
 																	</c:otherwise>
 																</c:choose>
