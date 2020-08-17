@@ -100,24 +100,13 @@ public class MateServiceImpl implements MateService {
 
 		//세션으로부터 userId 여부를 검사한다.
 		User user = mateDao.getUserMateInfoById(mateTimeLine.getUser().getId());
-		//userDao.getUserById(mateTimeLine.getUser().getId());
-		if(user == null) {
-			throw new RuntimeException("접근 권한이 없습니다.");
-		}
+		
 		//mate방이 존재하는지 여부를 검사한다.
 		Mate mate = mateDao.getMateByMateId(mateTimeLine.getId());
-		if(mate == null) {
-			throw new RuntimeException("존재하지 않는 메이트 방입니다.");
-		}
 		//해당 user가 mate에 소속되어있는지 검사한다.
 		List<User> users = mateDao.getMateUserByMateId(mateTimeLine.getId());
-		User existUser = null;
-		for(User savedUser : users) {
-			existUser = mateDao.getUserMateInfoById(savedUser.getId());
-		}
-		if(existUser == null) {
-			throw new RuntimeException("접근 권한이 없습니다.");
-		}
+		
+		canAccessMate(user,mate,users);
 		
 		//콘텐트를 받아서 mateDao의 메소드를 실행한다.
 		mateDao.addTimeLine(mateTimeLine);
@@ -130,5 +119,21 @@ public class MateServiceImpl implements MateService {
 		map.put("count", count);
 		map.put("time", time);
 		return map;
+	}
+	private void canAccessMate(User user, Mate mate, List<User> users) {
+		if(user == null) {
+			throw new RuntimeException("접근 권한이 없습니다.");
+		}
+		if(mate == null) {
+			throw new RuntimeException("존재하지 않는 메이트 방입니다.");
+		}
+		User existUser = null;
+		for(User savedUser : users) {
+			existUser = mateDao.getUserMateInfoById(savedUser.getId());
+		}
+		if(existUser == null) {
+			throw new RuntimeException("접근 권한이 없습니다.");
+		}
+	
 	}
 }

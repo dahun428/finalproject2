@@ -113,12 +113,10 @@
 									<div class="card">
 										<div class="input-group m-3">
 											<input type="text" class="form-control"
-												placeholder="Recipient's username"
-												aria-label="Recipient's username"
-												aria-describedby="button-addon2">
+												id="tag-update-input-box">
 											<div class="input-group-append mr-5">
 												<button class="btn btn-outline-secondary" type="button"
-													id="button-addon2">등록</button>
+													id="tag-update-btn">등록</button>
 											</div>
 										</div>
 
@@ -211,31 +209,6 @@
 		<input type="hidden" value="${pid }" id="pid"/>
 		<input type="hidden" value="${mnum }" id="mnum" />
 	</div>
-	<script type="text/javascript">
-	$(function(){
-		$('#card-x-btn').click(function() {
-			$('#mate-override-card').hide();
-			$('#mate-card-left').show();
-		});
-		$('#mate-card-left').click(function() {
-			$('#mate-override-card').show();
-			$('#mate-card-left').hide();
-		});
-		$('#mate-plus-hastag').click(function(){
-			var $icon = $(this).find('i');
-			var isPlus = $(this).find('i').hasClass('fas fa-plus');
-			if(isPlus){
-				$icon.removeClass('fas fa-plus').addClass('fas fa-minus');
-			} else {
-				$icon.removeClass('fas fa-minus').addClass('fas fa-plus');
-			}
-			$('#mate-plus-hastag-box').toggle();
-		});
-		$('#mate-out-btn').click(function(){
-			confirm('정말로 해당 방에서 나가겠습니까?')
-		})
-		
-	})
-	</script>
+	
 </body>
 </html>

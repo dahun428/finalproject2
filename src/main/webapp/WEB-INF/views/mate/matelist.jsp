@@ -44,7 +44,7 @@
 										<c:if test="${not empty mateList }">
 										<c:forEach begin="1" end="1" var="mate" items="${mateList }">
 											<span style="display: none;cursor: pointer; " id="mate-card-left"><i class="fas fa-chevron-left"></i></span>
-											<span class="h1 font-weight-bold">${mate.performance.title }</span>
+											<span class="h1 font-weight-bold text-warning">${mate.performance.title }</span>
 										</c:forEach>
 										</c:if>
 										</div>
@@ -94,16 +94,21 @@
 														</div>
 														<div class="mt-5 text-muted	"
 															style="border-bottom: 1px solid gray;">
-															
 															<i class="fas fa-flag"></i> 인원 
-															<c:forEach items="${mate.mateMembers }" var="user" varStatus="status">
-																<c:out value="${status.step }"></c:out>
-															</c:forEach>
-															<span class="ml-2">2</span>
-															
+															<c:choose>
+																<c:when test="${not empty mate.mateMembers }" >
+																	<c:forEach items="${mate.mateMembers }" varStatus="status">
+																		<c:if test="${status.last }">
+																			<span class="ml-2">${status.count }</span>
+																		</c:if>	
+																	</c:forEach>
+																</c:when>
+																<c:otherwise>
+																	<span class="ml-2">0</span>
+																</c:otherwise>
+															</c:choose>
 															<span>/</span> <span>${mate.groupsize }</span>
 														</div>
-
 														<div style="border-bottom: 1px solid gray;">
 															<div class="text-muted">
 																<i class="fas fa-user-friends"></i> 참여자 : 
